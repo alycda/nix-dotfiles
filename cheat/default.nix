@@ -5,9 +5,9 @@ pkgs.mkShell {
 
   # $EDITOR=/usr/bin/nano
   shellHook = ''
-    export MY_VAR=''${MY_VAR:-$PWD}
+    export CHEAT_CONFIG_DIR=''${CHEAT_CONFIG_DIR:-$PWD}
 
     rm -rf ~/.config/cheat
-    ln -s $MY_VAR/cheat-config ~/.config/cheat
+    ln -s $CHEAT_CONFIG_DIR/cheat-config ~/.config/cheat
   '';
 }

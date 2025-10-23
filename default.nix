@@ -8,12 +8,14 @@ in
 
 pkgs.mkShell {
   buildInputs = cheatShell.buildInputs ++ helixShell.buildInputs;
-  # shellHook = (cheatShell.shellHook or "") + (helixShell.shellHook or "$EDITOR=(which hx)")
   shellHook = ''
-    export EDITOR="hx --config ${rootDir}/helix/helix-config}"
-    export MY_VAR=''${PWD}/cheat
-    ${cheatShell.shellHook or ""}
-    export MY_VAR=''${PWD}/helix
+    export HELIX_CONFIG_DIR=''${PWD}/helix
     ${helixShell.shellHook or ""}
+
+    export EDITOR="hx --config ${rootDir}/helix/helix-config/config.toml"
+    alias hx="hx --config $HELIX_CONFIG_DIR/helix-config/config.toml"
+
+    export CHEAT_CONFIG_DIR=''${PWD}/cheat
+    ${cheatShell.shellHook or ""}
   '';
 }

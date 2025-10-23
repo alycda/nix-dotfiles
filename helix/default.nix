@@ -4,8 +4,8 @@ pkgs.mkShell {
   buildInputs = [ pkgs.helix ];
 
   shellHook = ''
-    export MY_VAR=''${MY_VAR:-$PWD}
+    export HELIX_CONFIG_DIR=''${HELIX_CONFIG_DIR:-$PWD}
 
-    alias hx="hx --config $MY_VAR/helix-config/config.toml"
+    alias hx="hx --config $HELIX_CONFIG_DIR/helix-config/config.toml"
   '';
 }
