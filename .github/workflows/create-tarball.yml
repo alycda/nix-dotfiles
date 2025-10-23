@@ -1,0 +1,89 @@
+name: Create Nix Dotfiles Tarball
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  release:
+    types: [ published ]
+
+jobs:
+  create-tarball:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Create tarball with single top-level directory
+        run: |
+          # Create a temporary directory for organizing files
+          TEMP_DIR=$(mktemp -d)
+          TARGET_DIR="$TEMP_DIR/nix-dotfiles"
+          
+          # Create the target directory
+          mkdir -p "$TARGET_DIR"
+          
+          # Copy default.nix to the target directory
+          cp default.nix "$TARGET_DIR/"
+          
+          # Copy all non-dotfile directories (exclude .git, .github, .vscode, etc.)
+          for dir in */; do
+            if [[ ! "$dir" =~ ^\. ]]; then
+              cp -r "$dir" "$TARGET_DIR/"
+            fi
+          done
+          
+          # Create tarball with the single top-level directory
+          cd "$TEMP_DIR"
+          tar -czf nix-dotfiles.tar.gz nix-dotfiles/
+          
+          # Move tarball back to workspace
+          mv nix-dotfiles.tar.gz "$GITHUB_WORKSPACE/"
+          
+          # Clean up
+          rm -rf "$TEMP_DIR"
+          
+      - name: Verify tarball contents
+        run: |
+          echo "Tarball contents:"
+          tar -tzf nix-dotfiles.tar.gz | head -20
+          echo ""
+          echo "Extracting to verify structure..."
+          mkdir -p test-extract
+          cd test-extract
+          tar -xzf ../nix-dotfiles.tar.gz
+          echo "Extracted structure:"
+          find . -type f | head -20
+          
+      - name: Upload tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-dotfiles-tarball
+          path: nix-dotfiles.tar.gz
+          
+      - name: Create or update release (for tags)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: nix-dotfiles.tar.gz
+          body: |
+            Nix dotfiles configuration tarball for ${{ github.ref_name }}
+            
+            ## Usage
+            
+            You can use this tarball directly with nix-shell:
+            
+            ```bash
+            nix-shell https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz
+            ```
+            
+            Or download and extract:
+            
+            ```bash
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz | tar -xz
+            cd nix-dotfiles
+            nix-shell
+            ```
