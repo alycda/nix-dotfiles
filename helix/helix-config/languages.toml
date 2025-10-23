@@ -1,0 +1,81 @@
+# https://rust-analyzer.github.io/manual.html
+# https://rust-analyzer.github.io/manual.html#configuration
+
+[[language]]
+name = "rust"
+# scope = "source.rust"
+formatter = { command = "rustfmt" }
+auto-format = true
+file-types = ["rs"]
+language-servers = [ "rust-analyzer" ]
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+# args = ["--stdio"]
+
+[language-server.rust-analyzer.config]
+cargo.toolchain = "beta"
+rustc.toolchain = "beta"
+checkOnSave.command = "clippy"
+inlayHints.bindingModeHints.enable = true
+inlayHints.closureReturnTypeHints.enable = "with_block"
+inlayHints.typeHints.enable = true
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+# [language-server.typescript]
+# command = "typescript-language-server"
+# args = ["--stdio"]
+
+# [[language]]
+# name = "typescript"
+# language-servers = ["typescript"]
+# auto-format = true
+
+[[language]]
+name = "javascript"
+language-servers = ["typescript"]
+auto-format = true
+
+
+
+[[language]]
+name = "typescript"
+scope = "source.ts"
+injection-regex = "ts|typescript"
+file-types = ["ts", "mts", "cts"]
+shebangs = ["deno", "node"]
+roots = ["deno.json", "package.json", "tsconfig.json"]
+comment-token = "//"
+language-servers = ["typescript-language-server"]
+indent = { tab-width = 2, unit = "  " }
+
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+
+[[language]]
+name = "json"
+scope = "source.json"
+file-types = ["json", "jsonc", "geojson"]
+roots = []
+language-servers = ["json"]
+indent = { tab-width = 2, unit = "  " }
+
+[language-server.json]
+command = "vscode-json-languageserver"
+args = ["--stdio"]
+
+[language-server.brighterscript-lsp]
+command = "bsc"
+args = ["--lsp"]
+
+[[language]]
+name = "brightscript"
+scope = "source.brightscript"
+injection-regex = "brightscript"
+file-types = ["brs", "bs"]
+comment-tokens = ["'", "rem"]
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["brighterscript-lsp"]

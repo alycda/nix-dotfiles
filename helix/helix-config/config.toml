@@ -1,0 +1,23 @@
+theme = "mine"
+
+[editor.soft-wrap]
+enable = true
+
+[editor]
+# line-number = "relative"
+rulers = [72, 80, 100, 120]
+"color-modes" = true
+
+# https://helix-editor.com/news/release-25-01-highlights/
+# https://github.com/helix-editor/helix/blob/b53dafe326d51b7f64a1c52379e3d4150cd2991e/book/src/editor.md#editorinline-diagnostics-section
+[editor.inline-diagnostics]
+cursor-line = "hint"
+other-lines = "hint"
+
+# [keys.normal]
+
+# [language-server.rust-analyzer.config]
+# checkOnSave.command = "clippy"
+# inlayHints.bindingModeHints.enable = true
+# inlayHints.closureReturnTypeHints.enable = "with_block"
+# inlayHints.typeHints.enable = true
