@@ -4,8 +4,6 @@ on:
   push:
     branches: [ main, master ]
     tags: [ 'v*' ]
-  release:
-    types: [ published ]
 
 jobs:
   create-tarball:
@@ -29,6 +27,12 @@ jobs:
           
           # Create the target directory
           mkdir -p "$TARGET_DIR"
+          
+          # Verify default.nix exists before copying
+          if [ ! -f "default.nix" ]; then
+            echo "Error: default.nix not found in repository root"
+            exit 1
+          fi
           
           # Copy default.nix to the target directory
           echo "Copying default.nix..."
