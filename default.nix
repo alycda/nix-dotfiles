@@ -4,6 +4,7 @@ let
   cheatShell = import ./cheat/default.nix { inherit pkgs; };
   helixShell = import ./helix/default.nix { inherit pkgs; };
   vcsShell = import ./vcs/default.nix     { inherit pkgs; };
+  rustShell = import ./rust/default.nix   { inherit pkgs; };
   rootDir = builtins.toString ./.;
 in
 
@@ -15,6 +16,7 @@ pkgs.mkShell {
     cheatShell.buildInputs
     helixShell.buildInputs
     vcsShell.buildInputs
+    rustShell.buildInputs
 
     # extra utilities
     eza
@@ -33,5 +35,7 @@ pkgs.mkShell {
 
     export VCS_CONFIG_DIR=${rootDir}/vcs
     ${vcsShell.shellHook or ""}
+
+    ${rustShell.shellHook or ""}
   '';
 }
