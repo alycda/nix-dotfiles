@@ -2,11 +2,13 @@
 
 let
   thisDir = builtins.toString ./.;
-  hxDiffWrapper = import ./pkgs/hx-diff-wrapper { inherit pkgs; };
+  hxWrapper = pkgs.writeShellScriptBin "hx-diff-wrapper" ''
+    ${pkgs.helix}/bin/hx "$(dirname "$1")" "$2/JJ-INSTRUCTIONS"
+  '';
 in
 
 pkgs.mkShell {
-  buildInputs = with pkgs; [ jujutsu gh helix ] ++ [ hxDiffWrapper ]; # gk-cli
+  buildInputs = with pkgs; [ jujutsu gh helix ] ++ [ hxWrapper ]; # gk-cli
 
   shellHook = ''
     export VCS_CONFIG_DIR=''${VCS_CONFIG_DIR:-$PWD}
