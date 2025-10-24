@@ -3,7 +3,6 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [ cheat ];
 
-  # $EDITOR=/usr/bin/nano
   shellHook = ''
     export CHEAT_CONFIG_DIR=''${CHEAT_CONFIG_DIR:-$PWD}
 

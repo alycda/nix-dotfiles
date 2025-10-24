@@ -1,10 +1,17 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {
+    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "claude-code"
+    ];
+  }
+, lib ? pkgs.lib
+}:
 
 let
   cheatShell = import ./cheat/default.nix { inherit pkgs; };
   helixShell = import ./helix/default.nix { inherit pkgs; };
   vcsShell = import ./vcs/default.nix     { inherit pkgs; };
   rustShell = import ./rust/default.nix   { inherit pkgs; };
+  agentShell = import ./agent/default.nix { inherit pkgs; };
   rootDir = builtins.toString ./.;
 in
 
@@ -17,6 +24,7 @@ pkgs.mkShell {
     helixShell.buildInputs
     vcsShell.buildInputs
     rustShell.buildInputs
+    agentShell.buildInputs
 
     # extra utilities
     eza

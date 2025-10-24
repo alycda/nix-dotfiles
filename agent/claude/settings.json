@@ -1,0 +1,9 @@
+{
+    "cleanupPeriodDays": 90,
+    "permissions": {
+        "allow": [
+            "Bash(gh api:*)",
+            "Bash(gh browse)",
+        ]
+    }
+}
