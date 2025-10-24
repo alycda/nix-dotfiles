@@ -11,7 +11,7 @@ pkgs.mkShell {
   buildInputs = cheatShell.buildInputs 
     ++ helixShell.buildInputs
     ++ vcsShell.buildInputs 
-    ++ [ pkgs.eza ];
+    ++ [ pkgs.eza pkgs.asciinema_3 ];
   
   shellHook = ''
     export HELIX_CONFIG_DIR=${rootDir}/helix

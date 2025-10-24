@@ -1,0 +1,26 @@
+[core]
+    editor = code --wait
+
+[alias]
+    br = branch
+    branches = branch -a
+
+    co = checkout
+    cp = cherry-pick
+    
+    l = log --color --graph --format='%C(magenta)%h%Creset %s %C(cyan)<%an>%Creset' -n 20 --abbrev-commit
+    # l = log --pretty=oneline -n 20 --graph --abbrev-commit
+    # View abbreviated SHA, description, history graph, time and author
+    lg = log --color --graph --format='%C(magenta)%h%Creset -%C(green)%d%Creset %s %C(yellow)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --
+
+    remotes = remote -v
+
+    # View the current working tree status using the short format.
+    s = status -s
+    st = status
+
+[log]
+    date = relative
+
+[pull]
+    rebase = true    
