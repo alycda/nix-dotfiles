@@ -5,7 +5,7 @@ let
 in
 
 pkgs.mkShell {
-  buildInputs = [ pkgs.jujutsu pkgs.gh pkgs.gk-cli ];
+  buildInputs = with pkgs; [ jujutsu gh ]; # gk-cli
 
   shellHook = ''
     export VCS_CONFIG_DIR=''${VCS_CONFIG_DIR:-$PWD}

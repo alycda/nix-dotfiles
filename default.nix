@@ -8,10 +8,17 @@ let
 in
 
 pkgs.mkShell {
-  buildInputs = cheatShell.buildInputs 
-    ++ helixShell.buildInputs
-    ++ vcsShell.buildInputs 
-    ++ [ pkgs.eza pkgs.asciinema_3 ];
+  # Merge all the package lists together
+  buildInputs = with pkgs; [
+    # Packages from the sub‑shells
+    cheatShell.buildInputs
+    helixShell.buildInputs
+    vcsShell.buildInputs
+
+    # extra utilities
+    eza
+    asciinema_3
+  ];
   
   shellHook = ''
     export HELIX_CONFIG_DIR=${rootDir}/helix

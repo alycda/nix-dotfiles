@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  buildInputs = [ pkgs.helix ];
+  buildInputs = with pkgs; [ helix ];
 
   shellHook = ''
     export HELIX_CONFIG_DIR=''${HELIX_CONFIG_DIR:-$PWD}

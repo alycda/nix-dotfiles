@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  buildInputs = [ pkgs.cheat ];
+  buildInputs = with pkgs; [ cheat ];
 
   # $EDITOR=/usr/bin/nano
   shellHook = ''
