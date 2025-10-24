@@ -1,0 +1,29 @@
+&mut String
+// Inserting and appending string
+push_str (&str)
+insert_str (usize, &str)
+
+// Adding and removing char
+push (char)
+pop () -> Option<char>
+insert (usize, char)
+remove (usize) -> char
+
+// Clearing
+clear ()
+truncate (usize)
+retain ((char) -> bool)
+
+// Capacity manipulation
+reserve (usize)
+reserve_exact (usize)
+shrink_to_fit ()
+
+// Misc.
+split_off (usize) -> String
+replace_range (RangeBounds<usize>
+, &str)
+drain (RangeBounds<usize>
+) -> Iterator<Item = char>
+
+// from https://upsuper.github.io/rust-cheatsheet/

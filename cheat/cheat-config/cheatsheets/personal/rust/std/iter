@@ -1,0 +1,93 @@
+Iterator<Item = T>
+// Mapping and filtering
+map        (( T) -> U)         -> Iterator<Item = U>
+filter     ((&T) -> bool)      -> Iterator<Item = T>
+filter_map (( T) -> Option<U>) -> Iterator<Item = U>
+
+// Collecting and folding
+fold (S, (S, T) -> S) -> S
+collect () -> B where B: FromIterator<T>
+partition ((&T) -> bool) -> (B, B) where B: Default + Extend<T>
+
+// Counting and enumerating
+count () -> usize
+last () -> Option<T>
+enumerate () -> Iterator<Item = (usize, T)>
+Combining with other iterators
+zip   (IntoIterator<Item = U>) -> Iterator<Item = (T, U)>
+chain (IntoIterator<Item = T>) -> Iterator<Item = T>
+
+// Flattening
+flatten () -> Iterator<U> where T: IntoIterator<U>
+flat_map ((T) -> IntoIterator<Item = U>) -> Iterator<Item = U>
+
+// Taking and skipping
+skip (usize) -> Iterator<Item = T>
+take (usize) -> Iterator<Item = T>
+skip_while ((&T) -> bool) -> Iterator<Item = T>
+take_while ((&T) -> bool) -> Iterator<Item = T>
+step_by (usize) -> Iterator<Item = T>
+
+// Misc. iterating
+for_each ((T) -> ()) -> ()
+inspect ((&T) -> ()) -> Iterator<Item = T>
+scan (S, (&mut S, T) -> Option<U>) -> Iterator<Item = U>
+
+// Calculations
+sum     () -> S where S: Sum<T>
+product () -> P where P: Product<T>
+
+// Maximum and minimum
+max () -> Option<T> where T: Ord
+min () -> Option<T> where T: Ord
+max_by ((&T, &T) -> Ordering) -> Option<T>
+min_by ((&T, &T) -> Ordering) -> Option<T>
+max_by_key ((&T) -> U) -> Option<T> where U: Ord
+min_by_key ((&T) -> U) -> Option<T> where U: Ord
+
+// Comparing with another iterator
+eq (IntoIterator<Item = T>) -> bool where T: PartialEq
+ne (IntoIterator<Item = T>) -> bool where T: PartialEq
+lt (IntoIterator<Item = T>) -> bool where T: PartialOrd
+le (IntoIterator<Item = T>) -> bool where T: PartialOrd
+gt (IntoIterator<Item = T>) -> bool where T: PartialOrd
+ge (IntoIterator<Item = T>) -> bool where T: PartialOrd
+cmp (IntoIterator<Item = T>) -> Ordering where T: Ord
+partial_cmp (IntoIterator<Item = T>)
+-> Option<Ordering> where T: PartialOrd
+
+// Reversing and cycling
+rev   () -> Iterator<Item = T> where Self: DoubleEndedIterator
+cycle () -> Iterator<Item = T> where Self: Clone
+
+Iterator<Item = &T>
+// Cloning inner
+cloned () -> Iterator<T> where T: Clone
+copied () -> Iterator<T> where T: Copy
+
+&mut Iterator<Item = T>
+// Finding and positioning
+find      ((&T) -> bool)      -> Option<T>
+find_map  (( T) -> Option<U>) -> Option<U>
+position  (( T) -> bool)      -> Option<usize>
+rposition (( T) -> bool)      -> Option<usize>
+where Self: ExactSizeIterator + DoubleEndedIterator
+
+// Boolean operations
+all ((T) -> bool) -> bool
+any ((T) -> bool) -> bool
+Try iterating
+try_for_each   ((T) -> R) -> R where R: Try<Ok = ()>
+try_fold (S, (S, T) -> R) -> R where R: Try<Ok = S>
+
+iter
+// Creating simple iterators
+empty () -> Iterator<Item = T>
+once (T) -> Iterator<Item = T>
+once_with (() -> T) -> Iterator<Item = T>
+repeat (T) -> Iterator<Item = T> where T: Clone
+repeat_with (() -> T) -> Iterator<Item = T>
+from_fn (() -> Option<T>) -> Iterator<Item = T>
+successors (Option<T>, (&T) -> Option<T>) -> Iterator<Item = T>
+
+// from https://upsuper.github.io/rust-cheatsheet/

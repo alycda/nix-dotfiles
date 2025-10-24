@@ -1,0 +1,96 @@
+str
+Bytes
+from_utf8     (&[u8])     -> Result<&str, Utf8Error>
+from_utf8_mut (&mut [u8]) -> Result<&mut str, Utf8Error>
+
+&str
+// Chars
+chars () -> Iterator<Item = char>
+char_indices () -> Iterator<Item = (usize, char)>
+is_char_boundary (usize) -> bool
+
+// Bytes
+bytes () -> Iterator<Item = u8>
+as_bytes () -> &[u8]
+Splitting to two parts
+split_at (usize) -> (&str, &str)
+
+// Splitting to iterator
+lines () -> Iterator<Item = &str>
+split_whitespace () -> Iterator<Item = &str>
+split_ascii_whitespace () -> Iterator<Item = &str>
+split  (Pattern
+) -> Iterator<Item = &str>
+rsplit (Pattern
+) -> Iterator<Item = &str>
+splitn  (usize, Pattern
+) -> Iterator<Item = &str>
+rsplitn (usize, Pattern
+) -> Iterator<Item = &str>
+split_terminator  (Pattern
+) -> Iterator<Item = &str>
+rsplit_terminator (Pattern
+) -> Iterator<Item = &str>
+
+// Trimming
+trim       () -> &str
+trim_start () -> &str
+trim_end   () -> &str
+trim_matches       (Pattern
+) -> &str
+trim_start_matches (Pattern
+) -> &str
+trim_end_matches   (Pattern
+) -> &str
+
+// Matching and finding
+contains    (Pattern
+) -> bool
+starts_with (Pattern
+) -> bool
+ends_with   (Pattern
+) -> bool
+find  (Pattern
+) -> Option<usize>
+rfind (Pattern
+) -> Option<usize>
+matches  (Pattern
+) -> Iterator<Item = &str>
+rmatches (Pattern
+) -> Iterator<Item = &str>
+match_indices  (Pattern
+) -> Iterator<Item = (usize, &str)>
+rmatch_indices (Pattern
+) -> Iterator<Item = (usize, &str)>
+
+// Case
+to_uppercase () -> String
+to_lowercase () -> String
+to_ascii_uppercase () -> String
+to_ascii_lowercase () -> String
+eq_ignore_ascii_case (&str) -> bool
+
+// Replacing
+replace  (Pattern
+, &str) -> String
+replacen (Pattern
+, &str, usize) -> String
+// Length
+len () -> usize
+is_empty () -> bool
+
+// Misc.
+is_ascii () -> bool
+repeat (usize) -> String
+encode_utf16 () -> Iterator<Item = u16>
+parse () -> Result<F, F::Err> where F: FromStr
+
+&mut str
+// Splitting to two parts
+split_at_mut (usize) -> (&mut str, &mut str)
+
+// Case conversion
+make_ascii_uppercase ()
+make_ascii_lowercase ()
+
+// from https://upsuper.github.io/rust-cheatsheet/

@@ -1,0 +1,43 @@
+Result<T, E>
+// To inner type
+unwrap () -> T where E: Debug
+unwrap_err () -> E where T: Debug
+unwrap_or (T) -> T
+unwrap_or_else ((E) -> T) -> T
+unwrap_or_default () -> T where T: Default
+expect (&str) -> T
+expect_err (&str) -> E
+ok () -> Option<T>
+err () -> Option<E>
+
+//Mapping
+map ((T) -> U) -> Result<U, E>
+map_err ((E) -> F) -> Result<T, F>
+map_or (U, (T) -> U) -> U
+map_or_else ((E) -> U, (T) -> U) -> U
+
+//Conditioning
+and (Result<U, E>) -> Result<U, E>
+and_then ((T) -> Result<U, E>) -> Result<U, E>
+or (Result<T, F>) -> Result<T, F>
+or_else ((E) -> Result<T, F>) -> Result<T, F>
+
+Result<Option<T>, E>
+// Transposing
+transpose () -> Option<Result<T, E>>
+
+&Result<T, E>
+// Checking inner
+is_ok () -> bool
+is_err () -> bool
+
+// To inner reference
+as_ref () -> Result<&T, &E>
+iter () -> Iterator<Item = &T>
+
+&mut Result<T, E>
+// To inner mutable reference
+as_mut () -> Result<&mut T, &mut E>
+iter_mut () -> Iterator<Item = &mut T>
+
+// from https://upsuper.github.io/rust-cheatsheet/

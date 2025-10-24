@@ -1,0 +1,129 @@
+&[T]
+// Splitting to iterator
+split  ((&T) -> bool) -> Iterator<Item = &[T]>
+rsplit ((&T) -> bool) -> Iterator<Item = &[T]>
+splitn  (usize, (&T) -> bool) -> Iterator<Item = &[T]>
+rsplitn (usize, (&T) -> bool) -> Iterator<Item = &[T]>
+
+// Splitting at position
+split_at (usize) -> (&[T], &[T])
+split_first () -> Option<(&T, &[T])>
+split_last  () -> Option<(&T, &[T])>
+
+// Chunks and windows
+chunks        (usize) -> Iterator<Item = &[T]>
+chunks_exact  (usize) -> Iterator<Item = &[T]>
+rchunks       (usize) -> Iterator<Item = &[T]>
+rchunks_exact (usize) -> Iterator<Item = &[T]>
+windows       (usize) -> Iterator<Item = &[T]>
+
+// Matching
+contains    (&T)   -> bool where T: PartialEq
+starts_with (&[T]) -> bool where T: PartialEq
+ends_with   (&[T]) -> bool where T: PartialEq
+
+// Binary searching
+binary_search (&T)                   -> Result<usize, usize> where T: Ord
+binary_search_by ((&T) -> Ordering)  -> Result<usize, usize>
+binary_search_by_key (&B, (&T) -> B) -> Result<usize, usize> where B: Ord
+Getting and iterating
+first () -> Option<&T>
+last  () -> Option<&T>
+get (SliceIndex<[T]>) -> Option<&T>
+iter () -> Iterator<Item = &T>
+
+// Length
+len () -> usize
+is_empty () -> bool
+
+&mut [T]
+// Splitting to iterator
+split_mut  ((&T) -> bool) -> Iterator<Item = &mut [T]>
+rsplit_mut ((&T) -> bool) -> Iterator<Item = &mut [T]>
+splitn_mut  (usize, (&T) -> bool) -> Iterator<Item = &mut [T]>
+rsplitn_mut (usize, (&T) -> bool) -> Iterator<Item = &mut [T]>
+
+// Splitting at position
+split_at_mut (usize) -> (&mut [T], &mut [T])
+split_first_mut () -> Option<(&mut T, &mut [T])>
+split_last_mut  () -> Option<(&mut T, &mut [T])>
+
+// Chunks
+chunks_mut        (usize) -> Iterator<Item = &mut [T]>
+chunks_exact_mut  (usize) -> Iterator<Item = &mut [T]>
+rchunks_mut       (usize) -> Iterator<Item = &mut [T]>
+rchunks_exact_mut (usize) -> Iterator<Item = &mut [T]>
+
+// Sorting
+sort () where T: Ord
+sort_by ((&T, &T) -> Ordering)
+sort_by_key ((&T) -> K) where K: Ord
+sort_by_cached_key ((&T) -> K) where K: Ord
+sort_unstable () where T: Ord
+sort_unstable_by ((&T, &T) -> Ordering)
+sort_unstable_by_key ((&T) -> K) where K: Ord
+
+// Rearranging
+swap (usize, usize)
+reverse ()
+rotate_left (usize)
+rotate_right (usize)
+
+// Overriding
+swap_with_slice  (&mut [T])
+copy_from_slice  (&[T]) where T: Copy
+clone_from_slice (&[T]) where T: Clone
+
+// Getting and iterating
+first_mut () -> Option<&mut T>
+last_mut  () -> Option<&mut T>
+get_mut (SliceIndex<[T]>) -> Option<&mut T>
+iter_mut () -> Iterator<Item = &mut T>
+
+&mut Vec<T>
+// Adding and removing single item
+push (T)
+pop () -> Option<T>
+insert (usize, T)
+remove (usize) -> T
+swap_remove (usize) -> T
+
+// Extending
+append (&mut Vec<T>)
+extend (IntoIterator<Item = T>)
+extend (IntoIterator<Item = &T>) where T: Copy
+extend_from_slice (&[T]) where T: Clone
+
+// Resizing
+truncate (usize)
+resize (usize, T) where T: Clone
+resize_with (usize, () -> T)
+
+// Clearing
+clear ()
+retain ((&T) -> bool)
+
+// Removing or replacing range into iterator
+drain  (RangeBounds<usize>
+) -> Iterator<T>
+splice (RangeBounds<usize>
+, IntoIterator<Item = T>) -> Iterator<T>
+
+// Deduplicating
+dedup () where T: PartialEq
+dedup_by ((&mut T, &mut T) -> bool)
+dedup_by_key ((&mut T) -> K) where K: PartialEq
+Splitting off
+split_off (usize) -> Vec<T>
+
+// Capacity manipulation
+reserve (usize)
+reserve_exact (usize)
+shrink_to_fit ()
+
+slice
+// Creating slice from reference
+from_ref (&T) -> &[T]
+from_mut (&mut T) -> &mut [T]
+
+// from https://upsuper.github.io/rust-cheatsheet/
