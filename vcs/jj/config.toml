@@ -2,3 +2,5 @@
 
 [ui]
 editor = "hx"
+# diff-editor = ["hx", "--vsplit", "$right/JJ_INSTRUCTIONS"]
+diff-editor = "hx-diff"
