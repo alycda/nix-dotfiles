@@ -9,6 +9,7 @@ in
 
 pkgs.mkShell {
   # Merge all the package lists together
+  # see https://nixos.org/manual/nixpkgs/unstable/#var-stdenv-buildInputs
   buildInputs = with pkgs; [
     # Packages from the sub‑shells
     cheatShell.buildInputs
