@@ -1,5 +1,6 @@
 [core]
     editor = code --wait
+    excludesFile = ~/.gitignore_global
 
 [alias]
     br = branch
