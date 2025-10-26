@@ -29,6 +29,7 @@ pkgs.mkShell {
     # extra utilities
     eza
     asciinema_3
+    lolcat
   ];
   
   shellHook = ''

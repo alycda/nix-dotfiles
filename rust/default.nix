@@ -6,9 +6,11 @@ pkgs.mkShell {
     just
     bacon
     presenterm
+
+    lolcat
   ];
 
   shellHook = ''
-    rustup update
+    rustup update | lolcat
   '';
 }
