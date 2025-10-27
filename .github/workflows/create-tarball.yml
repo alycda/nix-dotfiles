@@ -1,0 +1,162 @@
+name: Create Nix Dotfiles Tarball
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+
+jobs:
+  create-tarball:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Create tarball with single top-level directory
+        run: |
+          # Create a temporary directory for organizing files
+          TEMP_DIR=$(mktemp -d)
+          TARGET_DIR="$TEMP_DIR/nix-dotfiles"
+          
+          echo "Creating nix-dotfiles tarball..."
+          echo "Working directory: $(pwd)"
+          echo "Temporary directory: $TEMP_DIR"
+          
+          # Create the target directory
+          mkdir -p "$TARGET_DIR"
+          
+          # Verify default.nix exists before copying
+          if [ ! -f "default.nix" ]; then
+            echo "Error: default.nix not found in repository root"
+            exit 1
+          fi
+          
+          # Copy default.nix to the target directory
+          echo "Copying default.nix..."
+          cp default.nix "$TARGET_DIR/"
+          
+          # Copy all non-dotfile directories (exclude .git, .github, .vscode, etc.)
+          echo "Copying non-dotfile directories..."
+          for dir in */; do
+            if [[ ! "$dir" =~ ^\. ]]; then
+              echo "  Copying: $dir"
+              cp -r "$dir" "$TARGET_DIR/"
+            else
+              echo "  Skipping dotfile directory: $dir"
+            fi
+          done
+          
+          # Show what we're including
+          echo "Files included in tarball:"
+          find "$TARGET_DIR" -type f | sort
+          
+          # Create tarball with the single top-level directory
+          cd "$TEMP_DIR"
+          tar -czf nix-dotfiles.tar.gz nix-dotfiles/
+          
+          # Move tarball back to workspace
+          mv nix-dotfiles.tar.gz "$GITHUB_WORKSPACE/"
+          
+          # Show tarball size
+          echo "Tarball created: nix-dotfiles.tar.gz"
+          ls -lh "$GITHUB_WORKSPACE/nix-dotfiles.tar.gz"
+          
+          # Clean up
+          rm -rf "$TEMP_DIR"
+          
+      - name: Verify tarball contents
+        run: |
+          echo "============================================"
+          echo "Tarball verification"
+          echo "============================================"
+          echo "Tarball contents:"
+          tar -tzf nix-dotfiles.tar.gz | head -20
+          echo ""
+          if [ $(tar -tzf nix-dotfiles.tar.gz | wc -l) -gt 20 ]; then
+            echo "... and $(( $(tar -tzf nix-dotfiles.tar.gz | wc -l) - 20 )) more files"
+            echo ""
+          fi
+          
+          echo "Extracting to verify structure..."
+          mkdir -p test-extract
+          cd test-extract
+          tar -xzf ../nix-dotfiles.tar.gz
+          echo "Extracted structure:"
+          find . -type f | head -20
+          
+          echo ""
+          echo "Verifying default.nix exists and is valid:"
+          if [ -f "nix-dotfiles/default.nix" ]; then
+            echo "✓ default.nix found at root"
+            echo "Content preview:"
+            head -5 nix-dotfiles/default.nix
+          else
+            echo "✗ default.nix not found!"
+            exit 1
+          fi
+          
+      - name: Generate checksums
+        run: |
+          echo "Generating checksums..."
+          sha256sum nix-dotfiles.tar.gz > nix-dotfiles.tar.gz.sha256
+          md5sum nix-dotfiles.tar.gz > nix-dotfiles.tar.gz.md5
+          echo "SHA256: $(cat nix-dotfiles.tar.gz.sha256)"
+          echo "MD5: $(cat nix-dotfiles.tar.gz.md5)"
+          
+      - name: Upload tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-dotfiles-tarball-${{ github.sha }}
+          path: |
+            nix-dotfiles.tar.gz
+            nix-dotfiles.tar.gz.sha256
+            nix-dotfiles.tar.gz.md5
+          
+      - name: Create or update release (for tags)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            nix-dotfiles.tar.gz
+            nix-dotfiles.tar.gz.sha256
+            nix-dotfiles.tar.gz.md5
+          body: |
+            # Nix Dotfiles Configuration - ${{ github.ref_name }}
+            
+            This tarball contains a complete nix-shell environment with development tools and configurations.
+            
+            ## Quick Start
+            
+            Use directly with nix-shell:
+            ```bash
+            nix-shell https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz
+            ```
+            
+            ## Manual Installation
+            
+            Download and extract:
+            ```bash
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz | tar -xz
+            cd nix-dotfiles
+            nix-shell
+            ```
+            
+            ## What's Included
+            
+            - **Helix Editor**: Modern modal editor with custom configuration
+            - **Cheat**: Command-line cheatsheets with custom cheatsheets
+            - **Rust Development**: Rust toolchain with bacon, just, and presenterm
+            
+            ## Checksums
+            
+            Verify your download:
+            ```bash
+            # SHA256
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz.sha256
+            
+            # MD5
+            curl -L https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/nix-dotfiles.tar.gz.md5
+            ```
