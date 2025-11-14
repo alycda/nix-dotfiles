@@ -28,6 +28,8 @@ pkgs.mkShell {
 
     # extra utilities
     eza
+    ripgrep
+    ripgrep-all
     asciinema_3
     lolcat
   ];
